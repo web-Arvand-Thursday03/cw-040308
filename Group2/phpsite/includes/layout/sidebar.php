@@ -24,13 +24,13 @@ if (isset($_POST['insertSubscriber'])) {
 
 ?>
 <div class="col-lg-4">
-    <!-- Sesrch Section -->
+    <!-- Search Section -->
     <div class="card">
         <p class="fw-bold fs-6 card-header text-center">جستجو در سایت</p>
         <div class="card-body">
-            <form action="search.html">
+            <form action="search.php" method="get">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="جستجو ..." />
+                    <input type="text" class="form-control" placeholder="جستجو ..." name="search" />
                     <button class="btn btn-secondary" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
