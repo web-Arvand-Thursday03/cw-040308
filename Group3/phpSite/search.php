@@ -5,9 +5,11 @@ include "includes/layout/header.php";
 // var_dump($_GET['search']);
 if (isset($_GET['search'])) {
   $searchWord = $_GET['search'];
-  $stmt = $connection->query("SELECT * FROM posts WHERE title LIKE '%$searchWord%'");
+  $stmt = $connection->query("SELECT posts.*,categories.title AS category_title 
+                              FROM posts,categories
+                              WHERE categories.id=posts.category_id AND posts.title LIKE '%$searchWord%'");
   $posts = $stmt->fetchAll();
-  var_dump($posts);
+  // var_dump($posts);
 }
 
 
@@ -24,80 +26,38 @@ if (isset($_GET['search'])) {
       <div class="col-lg-8">
         <div class="row">
           <div class="col">
-            <div class="alert alert-secondary">پست های مرتبط با کلمه [ .... ]</div>
-
-            <div class="alert alert-danger">مقاله مورد نظر پیدا نشد !!!!</div>
+            <div class="alert alert-secondary">پست های مرتبط با کلمه [ <?= $_GET['search'] ?? "..." ?> ]</div>
           </div>
         </div>
+        <?php if (empty($posts)): ?>
+          <div class="alert alert-danger">مقاله مورد نظر پیدا نشد !!!!</div>
+        <?php else: ?>
+          <div class="row g-3">
+            <?php foreach ($posts as $post): ?>
+              <div class="col-sm-6">
+                <div class="card postCard">
+                  <img src="./assets/images/<?= $post['image'] ?>" class="card-img-top" alt="post-image" />
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <h5 class="card-title fw-bold"><?= $post['title'] ?></h5>
+                      <div>
+                        <span class="badge text-bg-secondary"><?= $post['category_title'] ?></span>
+                      </div>
+                    </div>
+                    <p class="card-text text-secondary pt-3">
+                      <?= mb_substr($post['body'], 0, 170, "utf-8") . "...."  ?>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <a href="single.html" class="btn btn-sm btn-dark">مشاهده</a>
 
-        <div class="row g-3">
-          <div class="col-sm-6">
-            <div class="card">
-              <img src="./assets/images/4.jpg" class="card-img-top" alt="post-image" />
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <h5 class="card-title fw-bold">آموزش دروس تخصصی</h5>
-                  <div>
-                    <span class="badge text-bg-secondary">شبکه</span>
+                      <p class="fs-7 mb-0">نویسنده : <?= $post['author'] ?></p>
+                    </div>
                   </div>
                 </div>
-                <p class="card-text text-secondary pt-3">
-                  در دوره آموزش جامع Eloquent در لاراول از ابتدایی ترین مفاهیم تا مفاهیم پیشرفته تر و پیچیده مرتبط با Eloquent به شکل کاربردی و در قالب مثال ها و سناریوهای
-                  مختلف آموزش داده می شود.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <a href="single.html" class="btn btn-sm btn-dark">مشاهده</a>
-
-                  <p class="fs-7 mb-0">نویسنده : منصوری</p>
-                </div>
               </div>
-            </div>
+            <?php endforeach ?>
           </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <img src="./assets/images/5.jpg" class="card-img-top" alt="post-image" />
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <h5 class="card-title fw-bold">آموزش جاوا اسکریپت</h5>
-                  <div>
-                    <span class="badge text-bg-secondary">برنامه نویسی</span>
-                  </div>
-                </div>
-                <p class="card-text text-secondary pt-3">
-                  در دوره آموزش جامع Eloquent در لاراول از ابتدایی ترین مفاهیم تا مفاهیم پیشرفته تر و پیچیده مرتبط با Eloquent به شکل کاربردی و در قالب مثال ها و سناریوهای
-                  مختلف آموزش داده می شود.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <a href="single.html" class="btn btn-sm btn-dark">مشاهده</a>
-
-                  <p class="fs-7 mb-0">نویسنده : منصوری</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card">
-              <img src="./assets/images/6.jpg" class="card-img-top" alt="post-image" />
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <h5 class="card-title fw-bold">آینده ربات ها</h5>
-                  <div>
-                    <span class="badge text-bg-secondary">متفزقه</span>
-                  </div>
-                </div>
-                <p class="card-text text-secondary pt-3">
-                  در دوره آموزش جامع Eloquent در لاراول از ابتدایی ترین مفاهیم تا مفاهیم پیشرفته تر و پیچیده مرتبط با Eloquent به شکل کاربردی و در قالب مثال ها و سناریوهای
-                  مختلف آموزش داده می شود.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <a href="single.html" class="btn btn-sm btn-dark">مشاهده</a>
-
-                  <p class="fs-7 mb-0">نویسنده : منصوری</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <?php endif ?>
       </div>
 
       <!-- Sidebar Section -->

@@ -53,7 +53,7 @@ if (isset($_GET['id'])) {
                       <?= substr($post['body'], 0, 300) . "..." ?>
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
-                      <a href="single.html" class="btn btn-sm btn-dark">مشاهده</a>
+                      <a href="single.php?id=<?= $post['id'] ?>" class="btn btn-sm btn-dark">مشاهده</a>
 
                       <p class="fs-7 mb-0">نویسنده : <?= $post['author'] ?></p>
                     </div>
